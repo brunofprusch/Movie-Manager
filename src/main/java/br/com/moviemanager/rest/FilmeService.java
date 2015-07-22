@@ -3,48 +3,93 @@ package br.com.moviemanager.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import br.com.moviemanager.dto.FilmeDTO;
+import br.com.moviemanager.dao.MovieDAO;
+import br.com.moviemanager.model.Movie;
 
 @Path("/filme")
 public class FilmeService {
 
 	
 	@GET
-	@Path("/filmes")
+	@Path("/test")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<FilmeDTO> listAll() {
+	public List<Movie> listAll() {
 		
-		List<FilmeDTO> list = new ArrayList<FilmeDTO>();
+		List<Movie> list = new ArrayList<Movie>();
 		
-		FilmeDTO DTOUm =  new FilmeDTO();
-		DTOUm.setId(1L);
-		DTOUm.setNome("A Culpa é das Estrelas");
-		DTOUm.setGenero("Drama/Romance");
-		DTOUm.setNota(10);
+		Movie movieUm =  new Movie();
+		movieUm.setId(1L);
+		movieUm.setName("A Culpa é das Estrelas");
+		movieUm.setGenre("Drama/Romance");
+		movieUm.setScore(10);
 		
-		list.add(DTOUm);
+		list.add(movieUm);
 		
-		FilmeDTO DTODois =  new FilmeDTO();
-		DTODois.setId(2L);
-		DTODois.setNome("Cidades de Papel");
-		DTODois.setGenero("Aventura/Comédia/Romance");
-		DTODois.setNota(10);
+		Movie movieDois =  new Movie();
+		movieDois.setId(2L);
+		movieDois.setName("Cidades de Papel");
+		movieDois.setGenre("Aventura/Comédia/Romance");
+		movieDois.setScore(10);
 		
-		list.add(DTODois);
+		list.add(movieDois);
 		
-		FilmeDTO DTOTres =  new FilmeDTO();
-		DTOTres.setId(3L);
-		DTOTres.setNome("O Maravilhoso Agora");
-		DTOTres.setGenero("Drama/Comédia/Romance");
-		DTOTres.setNota(10);
+		Movie movieTres =  new Movie();
+		movieTres.setId(3L);
+		movieTres.setName("O Maravilhoso Agora");
+		movieTres.setGenre("Drama/Comédia/Romance");
+		movieTres.setScore(10);
 		
-		list.add(DTOTres);
-
+		list.add(movieTres);
+		
+		Movie movieQuatro =  new Movie();
+		movieQuatro.setId(4L);
+		movieQuatro.setName("Meu Passado Me Condena 2");
+		movieQuatro.setGenre("Comedia/Comedia-Romance");
+		movieQuatro.setScore(10);
+		
+		list.add(movieQuatro);
+		
 		return list;
 	}
+	
+	
+	@GET
+	@Path("/filmes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Movie> listAllMovies(){
+		
+		EntityManager em = MovieDAO.getInstance().createEntityManager();
+		
+		List<Movie> listMovie = MovieDAO.getInstance().listAll(em);
+		
+		return listMovie;
+	}
+	
+	
+	@POST
+	@Path("/createMovie")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Movie createMovie(Movie movie){
+		
+		EntityManager em = MovieDAO.getInstance().createEntityManager();
+		em.getTransaction().begin();
+		
+		MovieDAO.getInstance().save(em, movie);
+		
+		em.getTransaction().commit();
+		em.close();
+		
+		return movie;
+	}
+	
+	
 }

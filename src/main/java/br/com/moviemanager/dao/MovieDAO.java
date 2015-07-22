@@ -1,8 +1,13 @@
 package br.com.moviemanager.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 import br.com.moviemanager.model.Movie;
 
@@ -24,24 +29,25 @@ private static MovieDAO instance;
 		return em;
 	}
 	
-	/*
-	public List<MovieDTO> listAll(EntityManager em){
+	
+	public List<Movie> listAll(EntityManager em){
 		
-		List<Movie> listFilmes = new ArrayList<Movie>();
+		List<Movie> listMovies = new ArrayList<Movie>();
 		
 		try{
 			
 			TypedQuery<Movie> query = em.createQuery("select m from Movie m ", Movie.class);
 			
-			listFilmes = query.getResultList();
+			listMovies = query.getResultList();
 			
 		}catch(NoResultException nre){
 			System.out.println("Nenhum filme cadastrado na tabela");
 		}
 		
-		return MovieDTO.listFilmeToListFilmeDTO(listFilmes);
+		return listMovies;
 	}
 	
+	/*
 	public MovieDTO load(EntityManager em, Long id){
 		
 		Movie movie = new Movie();
