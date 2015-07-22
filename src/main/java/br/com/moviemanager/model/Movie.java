@@ -19,6 +19,13 @@ public class Movie {
 	private int score;
 	private String note;
 	
+	//Novos atributos
+	//Visualizado
+	//Data de visualização
+	//Local
+	//Data de estreia
+	
+	
 	public Movie() {}
 
 	public Long getId() {
