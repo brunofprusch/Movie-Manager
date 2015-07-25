@@ -9,12 +9,18 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.moviemanager.model.Movie;
+import br.com.moviemanager.rest.FilmeService;
 
 public class MovieDAO {
 
 private static MovieDAO instance;
 	
+public Logger logger = LoggerFactory.getLogger(MovieDAO.class);
+
 	public static MovieDAO getInstance(){
 		if(instance == null){
 			instance = new MovieDAO();
@@ -30,20 +36,14 @@ private static MovieDAO instance;
 	}
 	
 	
-	public List<Movie> listAll(EntityManager em){
+	public List<Movie> listAll(EntityManager em) throws NoResultException{
 		
 		List<Movie> listMovies = new ArrayList<Movie>();
 		
-		try{
+		TypedQuery<Movie> query = em.createQuery("select m from Movie m ", Movie.class);
 			
-			TypedQuery<Movie> query = em.createQuery("select m from Movie m ", Movie.class);
+		listMovies = query.getResultList();
 			
-			listMovies = query.getResultList();
-			
-		}catch(NoResultException nre){
-			System.out.println("Nenhum filme cadastrado na tabela");
-		}
-		
 		return listMovies;
 	}
 	
@@ -65,7 +65,9 @@ private static MovieDAO instance;
 	*/
 	
 	public void save(EntityManager em, Movie movie){
+		logger.info("SAVE: Persist movie={}.", movie);
 		em.persist(movie);
 		em.flush();
+		logger.info("SAVE: id={}.", movie.getId());
 	}
 }

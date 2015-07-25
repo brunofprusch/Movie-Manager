@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,17 +12,22 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.moviemanager.dao.MovieDAO;
 import br.com.moviemanager.model.Movie;
 
-@Path("/filme")
+@Path("/movie")
 public class FilmeService {
 
+	public Logger logger = LoggerFactory.getLogger(FilmeService.class);
 	
 	@GET
 	@Path("/test")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Movie> listAll() {
+		logger.info("TEST: Start test service.");
 		
 		List<Movie> list = new ArrayList<Movie>();
 		
@@ -57,19 +63,34 @@ public class FilmeService {
 		
 		list.add(movieQuatro);
 		
+		logger.info("TEST: FINISH test service.");
 		return list;
 	}
 	
 	
 	@GET
-	@Path("/filmes")
+	@Path("/allMovies")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Movie> listAllMovies(){
+		logger.info("ALL MOVIES: Start search all movies service.");
 		
-		EntityManager em = MovieDAO.getInstance().createEntityManager();
+		EntityManager em = null;
+		List<Movie> listMovie = null;
 		
-		List<Movie> listMovie = MovieDAO.getInstance().listAll(em);
-		
+		try{
+			em = MovieDAO.getInstance().createEntityManager();
+			
+			logger.info("ALL MOVIES: Searching all movies.");
+			listMovie = MovieDAO.getInstance().listAll(em);
+			
+		}catch(NoResultException nre){
+			logger.error("ALL MOVIES: No result. {}", nre);
+		}catch(Exception e){
+			logger.error("ALL MOVIES: Exeception. {}", e);
+		}finally{
+			em.close();
+		}
+
 		return listMovie;
 	}
 	
@@ -79,14 +100,22 @@ public class FilmeService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Movie createMovie(Movie movie){
+		logger.info("CREATE MOVIE: Start create movie service.");
+		EntityManager em = null;
 		
-		EntityManager em = MovieDAO.getInstance().createEntityManager();
-		em.getTransaction().begin();
-		
-		MovieDAO.getInstance().save(em, movie);
-		
-		em.getTransaction().commit();
-		em.close();
+		try{
+			em = MovieDAO.getInstance().createEntityManager();
+			em.getTransaction().begin();
+			
+			MovieDAO.getInstance().save(em, movie);
+			logger.info("CREATE MOVIE: Commit for create movie={}.", movie);
+			em.getTransaction().commit();
+			
+		}catch(Exception e){
+			logger.error("CREATE MOVIE: Exeception. {}", e);
+		}finally{
+			em.close();
+		}
 		
 		return movie;
 	}
