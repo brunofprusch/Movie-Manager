@@ -15,14 +15,21 @@
 		<properties>
 			<!-- dados da conexao -->
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://*******/*******" />
-			<property name="javax.persistence.jdbc.user" value="*********" />
-			<property name="javax.persistence.jdbc.password" value="*******" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://movie-manager-db-instance.czuzerdbhlkj.us-west-1.rds.amazonaws.com:3306/moviemanager" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="**********" />
 
 			<!-- propriedades do hibernate -->
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.connection.pool_size" value="5" />
+			<property name="hibernate.c3p0.min_size" value="1" />
+  			<property name="hibernate.c3p0.max_size" value="5" />
+  			<property name="hibernate.c3p0.acquire_increment" value="1" />
+  			<property name="hibernate.c3p0.timeout" value="600" />
+  			<property name="hibernate.c3p0.max_statements" value="10" />
+ 		    <property name="hibernate.c3p0.idle_test_period" value="600" />
 
 		</properties>
 	</persistence-unit>
