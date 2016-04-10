@@ -6,88 +6,80 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tab_movie")
+@Table(name="tab_movie")
 public class Movie {
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String name;
+    private String country;
+    private int year;
+    private String genre;
+    private int score;
+    private String note;
+    private boolean assisted = false;
 
-	@Id
-	@GeneratedValue
-	private Long id;
-	private String name;
-	private String country;
-	private int year;
-	private String genre;
-	private int score;
-	private String note;
-	
-	//Novos atributos
-	//Visualizado
-	//Data de visualização
-	//Local
-	//Data de estreia
-	
-	
-	public Movie() {}
+    public Long getId() {
+        return this.id;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getCountry() {
+        return this.country;
+    }
 
-	public String getCountry() {
-		return country;
-	}
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+    public int getYear() {
+        return this.year;
+    }
 
-	public int getYear() {
-		return year;
-	}
+    public void setYear(int year) {
+        this.year = year;
+    }
 
-	public void setYear(int year) {
-		this.year = year;
-	}
+    public String getGenre() {
+        return this.genre;
+    }
 
-	public String getGenre() {
-		return genre;
-	}
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
 
-	public void setGenre(String genre) {
-		this.genre = genre;
-	}
+    public int getScore() {
+        return this.score;
+    }
 
-	public int getScore() {
-		return score;
-	}
+    public void setScore(int score) {
+        this.score = score;
+    }
 
-	public void setScore(int score) {
-		this.score = score;
-	}
+    public String getNote() {
+        return this.note;
+    }
 
-	public String getNote() {
-		return note;
-	}
+    public void setNote(String note) {
+        this.note = note;
+    }
 
-	public void setNote(String note) {
-		this.note = note;
-	}
+    public boolean isAssisted() {
+        return this.assisted;
+    }
 
-	@Override
-	public String toString() {
-		return "Movie [id=" + id + ", name=" + name + ", country=" + country
-				+ ", year=" + year + ", genre=" + genre + ", score=" + score
-				+ ", note=" + note + "]";
-	}
+    public void setAssisted(boolean assisted) {
+        this.assisted = assisted;
+    }
 }
